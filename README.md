@@ -13,11 +13,6 @@
 
 🔗 **[View Live Project](https://student-management-system-python-o6.vercel.app/)**
 
----
-
-## 📸 Screenshots
-
-> _Add screenshots of your app here for visual impact_
 
 ---
 
