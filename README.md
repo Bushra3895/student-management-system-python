@@ -3,6 +3,17 @@
 A command-line based Student Management System built with **Python** and **JSON** file storage — designed with clean architecture using Models and Services layers.
 
 ---
+## 📋 Live Demo
+
+> 💡 This is a command-line Python project — not deployed on web.
+
+## ▶️ Run Locally
+
+```bash
+git clone https://github.com/Bushra3895/student-management-system-python
+cd student-management-system-python
+python main.py
+```
 
 ## 📋 Features
 
