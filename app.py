@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # app.py
 from flask import Flask, request, jsonify, render_template, send_file
 from flask_cors import CORS
@@ -8,28 +7,16 @@ import pandas as pd
 import io
 import os
 from database import get_connection, init_db
-=======
-from flask import Flask, render_template, request, jsonify
-import os
-import urllib.request
-import urllib.error
-import json
->>>>>>> 4857efeec9d3642edf45eb047e4a2e6c3246f910
 
 app = Flask(__name__)
 CORS(app)
 
-<<<<<<< HEAD
 # JWT Config
-app.config["JWT_SECRET_KEY"] = "student-secret-2024"  # baad mein .env mein daalna
+app.config["JWT_SECRET_KEY"] = "student-secret-2024"
 jwt = JWTManager(app)
 
 # DB initialize karo app start pe
 init_db()
-
-# ─────────────────────────────────────────
-# 🔐 AUTH ROUTES
-# ─────────────────────────────────────────
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -61,41 +48,6 @@ def login():
         return jsonify({"token": token, "username": data["username"]})
     return jsonify({"error": "Wrong username or password"}), 401
 
-# ─────────────────────────────────────────
-# 👤 STUDENT ROUTES
-# ─────────────────────────────────────────
-=======
-JSONBIN_BIN_ID  = os.environ.get("JSONBIN_BIN_ID",  "YOUR_BIN_ID_HERE")
-JSONBIN_API_KEY = os.environ.get("JSONBIN_API_KEY", "YOUR_API_KEY_HERE")
-
-BASE_URL = f"https://api.jsonbin.io/v3/b/{JSONBIN_BIN_ID}"
-HEADERS  = {
-    "X-Master-Key"  : JSONBIN_API_KEY,
-    "Content-Type"  : "application/json",
-    "X-Bin-Versioning": "false",
-}
-
-def _request(method, url, body=None):
-    data = json.dumps(body).encode() if body else None
-    req  = urllib.request.Request(url, data=data, headers=HEADERS, method=method)
-    with urllib.request.urlopen(req) as resp:
-        return json.loads(resp.read().decode())
-
-def load_students():
-    try:
-        result = _request("GET", BASE_URL)
-        return result.get("record", {}).get("students", [])
-    except Exception as e:
-        print(f"[load_students] error: {e}")
-        return []
-
-def save_students(students):
-    try:
-        _request("PUT", BASE_URL, {"students": students})
-    except Exception as e:
-        print(f"[save_students] error: {e}")
->>>>>>> 4857efeec9d3642edf45eb047e4a2e6c3246f910
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -112,7 +64,6 @@ def get_students():
 @jwt_required()
 def add_student():
     data = request.json
-<<<<<<< HEAD
     try:
         conn = get_connection()
         conn.execute(
@@ -149,10 +100,6 @@ def delete_student(roll):
     conn.close()
     return jsonify({"message": "Deleted!"})
 
-# ─────────────────────────────────────────
-# 📊 ANALYTICS ROUTE
-# ─────────────────────────────────────────
-
 @app.route("/analytics", methods=["GET"])
 @jwt_required()
 def analytics():
@@ -178,10 +125,6 @@ def analytics():
         "overview": dict(data),
         "by_subject": [dict(s) for s in subjects]
     })
-
-# ─────────────────────────────────────────
-# 📥 EXPORT ROUTES
-# ─────────────────────────────────────────
 
 @app.route("/export/csv", methods=["GET"])
 @jwt_required()
@@ -217,6 +160,3 @@ def export_excel():
 
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
-=======
-    if not data or not data.get("name") or not data.get("roll"):
->>>>>>> 4857efeec9d3642edf45eb047e4a2e6c3246f910
