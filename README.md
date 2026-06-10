@@ -14,7 +14,18 @@
 
 🔗 **[https://student-management-system-python.onrender.com/](https://student-management-system-python.onrender.com/)**
 
-> ⚠️ **Note:** This app is hosted on Render's free tier. It may take **30–60 seconds** to wake up on first load if the server is in sleep mode. Please wait and refresh if needed.
+> ## 🔑 Demo Credentials
+
+Use the following demo account to explore the application:
+
+**Username:** teacher1
+
+**Password:** pass123
+
+> Note: This is a demo account created for recruiters and reviewers. Feel free to add, edit, or delete sample student records while testing the application.
+
+⚠️ If the application is hosted on Render's free tier, the first request may take 30–60 seconds to load while the server wakes up.
+
 
 ---
 
