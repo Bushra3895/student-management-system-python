@@ -1,40 +1,37 @@
-# database.py
-import sqlite3
+import psycopg2
+import psycopg2.extras
 import os
 
-DB_PATH = "data/students.db"
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # dict jaisa result milega
+    conn = psycopg2.connect(DATABASE_URL)
+    conn.cursor_factory = psycopg2.extras.RealDictCursor
     return conn
 
 def init_db():
-    os.makedirs("data", exist_ok=True)
-    conn = get_connection()
-    
-    conn.execute('''
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            password_hash BYTEA NOT NULL,
+            role TEXT DEFAULT 'teacher'
+        )
+    ''')
+    cur.execute('''
         CREATE TABLE IF NOT EXISTS students (
-            id        INTEGER PRIMARY KEY AUTOINCREMENT,
-            roll      TEXT    UNIQUE NOT NULL,
-            name      TEXT    NOT NULL,
-            email     TEXT,
-            subject   TEXT,
-            grade     REAL    DEFAULT 0,
-            marks     INTEGER DEFAULT 0,
+            id SERIAL PRIMARY KEY,
+            roll TEXT UNIQUE NOT NULL,
+            name TEXT NOT NULL,
+            email TEXT DEFAULT '',
+            subject TEXT DEFAULT '',
+            grade TEXT DEFAULT '',
+            marks INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id            INTEGER PRIMARY KEY AUTOINCREMENT,
-            username      TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            role          TEXT DEFAULT 'teacher'
-        )
-    ''')
-    
     conn.commit()
+    cur.close()
     conn.close()
-    print("✅ Database ready!")
