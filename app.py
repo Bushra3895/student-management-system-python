@@ -1,4 +1,4 @@
-# app.py
+from database import get_connection, init_db
 from flask import Flask, request, jsonify, render_template, send_file
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -6,8 +6,6 @@ import bcrypt
 import pandas as pd
 import io
 import os
-from database import get_connection, init_db
-
 app = Flask(__name__)
 CORS(app)
 
