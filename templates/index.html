@@ -1,269 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-<<<<<<< HEAD
     <meta charset="UTF-8">
     <title>Student Management System</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ── THEME VARIABLES ── */
         :root {
-            --bg: #f0f4f8;
-            --card: #ffffff;
-            --text: #1a202c;
-            --subtext: #718096;
-            --primary: #4f46e5;
-            --primary-h: #4338ca;
-            --danger: #e53e3e;
-            --success: #38a169;
-            --border: #e2e8f0;
-            --input-bg: #f7fafc;
-            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --bg: #f0f4f8; --card: #ffffff; --text: #1a202c;
+            --subtext: #718096; --primary: #4f46e5; --primary-h: #4338ca;
+            --danger: #e53e3e; --success: #38a169; --border: #e2e8f0;
+            --input-bg: #f7fafc; --shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
         [data-theme="dark"] {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f1f5f9;
-            --subtext: #94a3b8;
-            --primary: #6366f1;
-            --primary-h: #818cf8;
-            --border: #334155;
-            --input-bg: #1e293b;
-            --shadow: 0 2px 12px rgba(0,0,0,0.4);
+            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9;
+            --subtext: #94a3b8; --primary: #6366f1; --primary-h: #818cf8;
+            --border: #334155; --input-bg: #1e293b; --shadow: 0 2px 12px rgba(0,0,0,0.4);
         }
-
-        /* ── RESET & BASE ── */
         * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            transition: background .3s, color .3s;
-            min-height: 100vh;
-        }
-
-        /* ── LOGIN PAGE ── */
-        #loginPage {
-            display: flex; align-items: center;
-            justify-content: center; height: 100vh;
-        }
-        .login-card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 40px;
-            width: 380px;
-            box-shadow: var(--shadow);
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; min-height: 100vh; }
+        #loginPage { display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .login-card { background: var(--card); border-radius: 16px; padding: 40px; width: 380px; box-shadow: var(--shadow); }
         .login-card h2 { margin-bottom: 8px; font-size: 24px; }
         .login-card p  { color: var(--subtext); margin-bottom: 28px; font-size: 14px; }
-
-        /* ── INPUTS ── */
-        input, select {
-            width: 100%; padding: 10px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--input-bg);
-            color: var(--text);
-            font-size: 14px;
-            margin-bottom: 12px;
-            outline: none;
-            transition: border .2s;
-        }
+        input, select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); color: var(--text); font-size: 14px; margin-bottom: 12px; outline: none; transition: border .2s; }
         input:focus, select:focus { border-color: var(--primary); }
-
-        /* ── BUTTONS ── */
-        .btn {
-            padding: 10px 20px; border: none;
-            border-radius: 8px; cursor: pointer;
-            font-size: 14px; font-weight: 600;
-            transition: all .2s;
-        }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all .2s; }
         .btn-primary { background: var(--primary); color: white; width: 100%; }
         .btn-primary:hover { background: var(--primary-h); }
         .btn-sm { padding: 6px 14px; font-size: 12px; width: auto; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-success { background: var(--success); color: white; }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        /* ── NAVBAR ── */
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         #mainApp { display: none; }
-        .navbar {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 14px 28px;
-            display: flex; align-items: center;
-            justify-content: space-between;
-            position: sticky; top: 0; z-index: 100;
-            box-shadow: var(--shadow);
-        }
+        .navbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
         .navbar-brand { font-size: 18px; font-weight: 700; color: var(--primary); }
         .navbar-right { display: flex; gap: 10px; align-items: center; }
         .nav-tabs { display: flex; gap: 4px; }
-        .nav-tab {
-            padding: 8px 16px; border-radius: 8px;
-            cursor: pointer; font-size: 14px; font-weight: 500;
-            color: var(--subtext); border: none; background: transparent;
-            transition: all .2s;
-        }
-        .nav-tab.active, .nav-tab:hover {
-            background: var(--primary); color: white;
-        }
-
-        /* ── LAYOUT ── */
+        .nav-tab { padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--subtext); border: none; background: transparent; transition: all .2s; }
+        .nav-tab.active, .nav-tab:hover { background: var(--primary); color: white; }
         .container { max-width: 1100px; margin: 28px auto; padding: 0 20px; }
-
-        /* ── STATS CARDS ── */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px; margin-bottom: 24px;
-        }
-        .stat-card {
-            background: var(--card); border-radius: 12px;
-            padding: 20px; box-shadow: var(--shadow);
-            border-left: 4px solid var(--primary);
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); border-left: 4px solid var(--primary); }
         .stat-card .value { font-size: 28px; font-weight: 700; }
         .stat-card .label { font-size: 13px; color: var(--subtext); margin-top: 4px; }
-
-        /* ── TABLE ── */
-        .card {
-            background: var(--card); border-radius: 12px;
-            box-shadow: var(--shadow); overflow: hidden;
-        }
-        .card-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between;
-            align-items: center;
-        }
+        .card { background: var(--card); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+        .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .card-header h3 { font-size: 16px; font-weight: 600; }
         table { width: 100%; border-collapse: collapse; }
-        th {
-            background: var(--bg); padding: 12px 16px;
-            text-align: left; font-size: 12px;
-            text-transform: uppercase; color: var(--subtext);
-            letter-spacing: .5px;
-        }
+        th { background: var(--bg); padding: 12px 16px; text-align: left; font-size: 12px; text-transform: uppercase; color: var(--subtext); letter-spacing: .5px; }
         td { padding: 14px 16px; border-top: 1px solid var(--border); font-size: 14px; }
         tr:hover td { background: var(--bg); }
-
-        /* ── FORM ── */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px; padding: 20px;
-        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
         .form-grid .full { grid-column: 1 / -1; }
-
-        /* ── MODAL ── */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.5);
-            align-items: center; justify-content: center;
-            z-index: 999;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 999; }
         .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--card); border-radius: 16px;
-            width: 480px; max-width: 95vw;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .modal-header {
-            padding: 20px; border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .modal { background: var(--card); border-radius: 16px; width: 480px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .modal-body { padding: 20px; }
-        .modal-footer {
-            padding: 16px 20px; border-top: 1px solid var(--border);
-            display: flex; gap: 10px; justify-content: flex-end;
-        }
-
-        /* ── BADGE ── */
-        .badge {
-            padding: 3px 10px; border-radius: 20px;
-            font-size: 12px; font-weight: 600;
-        }
+        .modal-footer { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+        .badge { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge-pass { background: #c6f6d5; color: #276749; }
         .badge-fail { background: #fed7d7; color: #9b2c2c; }
         [data-theme="dark"] .badge-pass { background: #1a4731; color: #68d391; }
         [data-theme="dark"] .badge-fail { background: #4a1a1a; color: #fc8181; }
-
-        /* ── TOGGLE ── */
-        .theme-toggle {
-            background: var(--bg); border: 1px solid var(--border);
-            border-radius: 20px; padding: 6px 12px;
-            cursor: pointer; font-size: 16px;
-        }
-
-        /* ── SECTIONS ── */
+        .theme-toggle { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; cursor: pointer; font-size: 16px; }
         .section { display: none; }
         .section.active { display: block; }
-
         .export-btns { display: flex; gap: 10px; }
         .search-bar { margin-bottom: 16px; }
         .search-bar input { margin: 0; }
-
-        #toast {
-            position: fixed; bottom: 24px; right: 24px;
-            background: #1a202c; color: white;
-            padding: 12px 20px; border-radius: 10px;
-            font-size: 14px; opacity: 0;
-            transition: opacity .3s; z-index: 9999;
-            pointer-events: none;
-        }
+        #toast { position: fixed; bottom: 24px; right: 24px; background: #1a202c; color: white; padding: 12px 20px; border-radius: 10px; font-size: 14px; opacity: 0; transition: opacity .3s; z-index: 9999; pointer-events: none; }
     </style>
-=======
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Management System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #f0f4ff; min-height: 100vh; }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; color: white; }
-    .header h1 { font-size: 2rem; font-weight: 700; }
-    .header p { opacity: 0.85; margin-top: 6px; }
-    .stats { display: flex; gap: 16px; justify-content: center; padding: 24px; flex-wrap: wrap; }
-    .stat-card { background: white; border-radius: 12px; padding: 20px 32px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    .stat-card .num { font-size: 2rem; font-weight: 700; color: #667eea; }
-    .stat-card .label { color: #888; font-size: 0.85rem; margin-top: 4px; }
-    .container { max-width: 900px; margin: 0 auto; padding: 0 24px 40px; }
-    .form-card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 24px; }
-    .form-card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 18px; color: #333; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
-    .form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: #555; margin-bottom: 6px; }
-    .form-group input { width: 100%; padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border 0.2s; }
-    .form-group input:focus { border-color: #667eea; }
-    .btn-add { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
-    .btn-add:hover { opacity: 0.9; }
-    .search-bar { background: white; border-radius: 12px; padding: 16px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; display: flex; gap: 12px; }
-    .search-bar input { flex: 1; padding: 8px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; outline: none; }
-    .search-bar input:focus { border-color: #667eea; }
-    table { width: 100%; background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-collapse: collapse; overflow: hidden; }
-    thead { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-    thead th { padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; }
-    tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
-    tbody tr:hover { background: #f8f6ff; }
-    tbody td { padding: 14px 18px; font-size: 0.92rem; color: #333; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
-    .badge-active { background: #e8f5e9; color: #2e7d32; }
-    .btn-del { background: #fff0f0; color: #e53935; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: background 0.2s; }
-    .btn-del:hover { background: #ffcdd2; }
-    .empty { text-align: center; padding: 48px; color: #aaa; }
-    .toast { position: fixed; bottom: 24px; right: 24px; background: #323232; color: white; padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
-    .toast.show { opacity: 1; }
-    @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
-  </style>
->>>>>>> 4857efeec9d3642edf45eb047e4a2e6c3246f910
 </head>
 <body>
 
-<!-- ══════════════ LOGIN PAGE ══════════════ -->
 <div id="loginPage">
     <div class="login-card">
         <h2>🎓 Student MS</h2>
@@ -279,35 +89,15 @@
         </p>
         <p id="loginErr" style="color:red; font-size:13px; margin-top:8px;"></p>
     </div>
-<<<<<<< HEAD
-=======
-  </div>
-
-  <div class="search-bar">
-    <input id="search" placeholder="🔍 Search by name or roll number..." oninput="filterStudents()">
-  </div>
-
-  <table id="student-table">
-    <thead>
-      <tr>
-        <th>#</th><th>Name</th><th>Roll No</th><th>Grade</th><th>Status</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
->>>>>>> 4857efeec9d3642edf45eb047e4a2e6c3246f910
 </div>
 
-<!-- ══════════════ MAIN APP ══════════════ -->
 <div id="mainApp">
-
-    <!-- NAVBAR -->
     <nav class="navbar">
         <span class="navbar-brand">🎓 Student MS</span>
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showSection('dashboard')">Dashboard</button>
-            <button class="nav-tab" onclick="showSection('students')">Students</button>
-            <button class="nav-tab" onclick="showSection('analytics')">Analytics</button>
+            <button class="nav-tab active" onclick="showSection('dashboard', event)">Dashboard</button>
+            <button class="nav-tab" onclick="showSection('students', event)">Students</button>
+            <button class="nav-tab" onclick="showSection('analytics', event)">Analytics</button>
         </div>
         <div class="navbar-right">
             <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
@@ -317,42 +107,21 @@
 
     <div class="container">
 
-        <!-- ── DASHBOARD ── -->
         <div class="section active" id="sec-dashboard">
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="value" id="st-total">—</div>
-                    <div class="label">Total Students</div>
-                </div>
-                <div class="stat-card" style="border-color:#38a169">
-                    <div class="value" id="st-passed">—</div>
-                    <div class="label">Passed</div>
-                </div>
-                <div class="stat-card" style="border-color:#e53e3e">
-                    <div class="value" id="st-failed">—</div>
-                    <div class="label">Failed</div>
-                </div>
-                <div class="stat-card" style="border-color:#ed8936">
-                    <div class="value" id="st-avg">—</div>
-                    <div class="label">Avg Marks</div>
-                </div>
-                <div class="stat-card" style="border-color:#805ad5">
-                    <div class="value" id="st-high">—</div>
-                    <div class="label">Highest</div>
-                </div>
+                <div class="stat-card"><div class="value" id="st-total">—</div><div class="label">Total Students</div></div>
+                <div class="stat-card" style="border-color:#38a169"><div class="value" id="st-passed">—</div><div class="label">Passed</div></div>
+                <div class="stat-card" style="border-color:#e53e3e"><div class="value" id="st-failed">—</div><div class="label">Failed</div></div>
+                <div class="stat-card" style="border-color:#ed8936"><div class="value" id="st-avg">—</div><div class="label">Avg Marks</div></div>
+                <div class="stat-card" style="border-color:#805ad5"><div class="value" id="st-high">—</div><div class="label">Highest</div></div>
             </div>
             <div class="card">
                 <div class="card-header"><h3>📊 Subject-wise Performance</h3></div>
-                <div style="padding:20px; max-height:320px">
-                    <canvas id="subjectChart"></canvas>
-                </div>
+                <div style="padding:20px; max-height:320px"><canvas id="subjectChart"></canvas></div>
             </div>
         </div>
 
-        <!-- ── STUDENTS ── -->
         <div class="section" id="sec-students">
-
-            <!-- Add Form -->
             <div class="card" style="margin-bottom:20px">
                 <div class="card-header"><h3>➕ Student Add Karo</h3></div>
                 <div class="form-grid">
@@ -374,7 +143,6 @@
                 </div>
             </div>
 
-            <!-- Table -->
             <div class="card">
                 <div class="card-header">
                     <h3>👥 All Students</h3>
@@ -401,7 +169,6 @@
             </div>
         </div>
 
-        <!-- ── ANALYTICS ── -->
         <div class="section" id="sec-analytics">
             <div class="card">
                 <div class="card-header"><h3>📈 Pass / Fail Overview</h3></div>
@@ -411,16 +178,13 @@
             </div>
             <div class="card" style="margin-top:20px">
                 <div class="card-header"><h3>📚 Subject Average Marks</h3></div>
-                <div style="padding:20px; max-height:320px">
-                    <canvas id="barChart"></canvas>
-                </div>
+                <div style="padding:20px; max-height:320px"><canvas id="barChart"></canvas></div>
             </div>
         </div>
 
-    </div><!-- /container -->
-</div><!-- /mainApp -->
+    </div>
+</div>
 
-<!-- ══ EDIT MODAL ══ -->
 <div class="modal-overlay" id="editModal">
     <div class="modal">
         <div class="modal-header">
@@ -451,52 +215,31 @@
 <div id="toast"></div>
 
 <script>
-<<<<<<< HEAD
-// ═══════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════
-const API = "";  // Same origin
+const API = "";
 let TOKEN = localStorage.getItem("token") || "";
 let allStudents = [];
 let subChart, pieChart, barChart;
 
-// ═══════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════
 async function doLogin() {
     const username = document.getElementById("loginUser").value;
     const password = document.getElementById("loginPass").value;
-    const res = await fetch("/login", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({username, password})
-    });
+    const res = await fetch("/login", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({username, password}) });
     const data = await res.json();
-    if (data.token) {
-        TOKEN = data.token;
-        localStorage.setItem("token", TOKEN);
-        showApp();
-    } else {
-        document.getElementById("loginErr").textContent = data.error || "Error!";
-    }
+    if (data.token) { TOKEN = data.token; localStorage.setItem("token", TOKEN); showApp(); }
+    else { document.getElementById("loginErr").textContent = data.error || "Error!"; }
 }
 
 async function doRegister() {
     const username = document.getElementById("loginUser").value;
     const password = document.getElementById("loginPass").value;
     if (!username || !password) { showToast("Username aur password likho!"); return; }
-    const res = await fetch("/register", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({username, password})
-    });
+    const res = await fetch("/register", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({username, password}) });
     const data = await res.json();
     showToast(data.message || data.error);
 }
 
 function logout() {
-    localStorage.removeItem("token");
-    TOKEN = "";
+    localStorage.removeItem("token"); TOKEN = "";
     document.getElementById("mainApp").style.display = "none";
     document.getElementById("loginPage").style.display = "flex";
 }
@@ -504,27 +247,17 @@ function logout() {
 function showApp() {
     document.getElementById("loginPage").style.display = "none";
     document.getElementById("mainApp").style.display = "block";
-    loadStudents();
-    loadAnalytics();
+    loadStudents(); loadAnalytics();
 }
 
-// Auto-login if token exists
 window.onload = () => {
     const savedTheme = localStorage.getItem("theme") || "light";
     document.documentElement.setAttribute("data-theme", savedTheme);
     if (TOKEN) showApp();
 };
 
-// ═══════════════════════════════════════
-// AUTH HEADER
-// ═══════════════════════════════════════
-function authHeaders() {
-    return {"Content-Type":"application/json", "Authorization": `Bearer ${TOKEN}`};
-}
+function authHeaders() { return {"Content-Type":"application/json", "Authorization": `Bearer ${TOKEN}`}; }
 
-// ═══════════════════════════════════════
-// STUDENTS CRUD
-// ═══════════════════════════════════════
 async function loadStudents() {
     const res = await fetch("/students", { headers: authHeaders() });
     allStudents = await res.json();
@@ -533,10 +266,7 @@ async function loadStudents() {
 
 function renderTable(students) {
     const tbody = document.getElementById("studentTable");
-    if (!students.length) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--subtext); padding:40px">Koi student nahi mila</td></tr>`;
-        return;
-    }
+    if (!students.length) { tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--subtext); padding:40px">Koi student nahi mila</td></tr>`; return; }
     tbody.innerHTML = students.map(s => `
         <tr>
             <td><strong>${s.roll}</strong></td>
@@ -545,11 +275,7 @@ function renderTable(students) {
             <td>${s.subject || "—"}</td>
             <td><strong>${s.marks}</strong></td>
             <td>${s.grade || "—"}</td>
-            <td>
-                <span class="badge ${s.marks >= 50 ? 'badge-pass' : 'badge-fail'}">
-                    ${s.marks >= 50 ? 'Pass' : 'Fail'}
-                </span>
-            </td>
+            <td><span class="badge ${s.marks >= 50 ? 'badge-pass' : 'badge-fail'}">${s.marks >= 50 ? 'Pass' : 'Fail'}</span></td>
             <td style="display:flex; gap:6px">
                 <button class="btn btn-sm btn-outline" onclick='openEdit(${JSON.stringify(s)})'>✏️</button>
                 <button class="btn btn-sm btn-danger" onclick="deleteStudent('${s.roll}')">🗑️</button>
@@ -560,9 +286,7 @@ function renderTable(students) {
 
 function filterStudents(query) {
     const q = query.toLowerCase();
-    renderTable(allStudents.filter(s =>
-        s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q)
-    ));
+    renderTable(allStudents.filter(s => s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q)));
 }
 
 async function addStudent() {
@@ -575,9 +299,7 @@ async function addStudent() {
         grade: document.getElementById("f-grade").value,
     };
     if (!payload.roll || !payload.name) { showToast("Roll aur Name zaroori hai!"); return; }
-    const res = await fetch("/add", {
-        method:"POST", headers: authHeaders(), body: JSON.stringify(payload)
-    });
+    const res = await fetch("/add", { method:"POST", headers: authHeaders(), body: JSON.stringify(payload) });
     const data = await res.json();
     showToast(data.message || data.error);
     if (data.message) { clearForm(); loadStudents(); loadAnalytics(); }
@@ -596,9 +318,6 @@ async function deleteStudent(roll) {
     loadStudents(); loadAnalytics();
 }
 
-// ═══════════════════════════════════════
-// EDIT MODAL
-// ═══════════════════════════════════════
 function openEdit(student) {
     document.getElementById("e-roll").value    = student.roll;
     document.getElementById("e-name").value    = student.name;
@@ -609,111 +328,64 @@ function openEdit(student) {
     document.getElementById("editModal").classList.add("open");
 }
 
-function closeModal() {
-    document.getElementById("editModal").classList.remove("open");
-}
+function closeModal() { document.getElementById("editModal").classList.remove("open"); }
 
 async function saveEdit() {
     const roll = document.getElementById("e-roll").value;
     const payload = {
-        name:    document.getElementById("e-name").value,
-        email:   document.getElementById("e-email").value,
+        name: document.getElementById("e-name").value,
+        email: document.getElementById("e-email").value,
         subject: document.getElementById("e-subject").value,
-        marks:   parseInt(document.getElementById("e-marks").value) || 0,
-        grade:   document.getElementById("e-grade").value,
+        marks: parseInt(document.getElementById("e-marks").value) || 0,
+        grade: document.getElementById("e-grade").value,
     };
-    const res = await fetch(`/update/${roll}`, {
-        method:"PUT", headers: authHeaders(), body: JSON.stringify(payload)
-    });
+    const res = await fetch(`/update/${roll}`, { method:"PUT", headers: authHeaders(), body: JSON.stringify(payload) });
     const data = await res.json();
     showToast(data.message || data.error);
     closeModal(); loadStudents(); loadAnalytics();
 }
 
-// ═══════════════════════════════════════
-// EXPORT
-// ═══════════════════════════════════════
 async function exportFile(type) {
     const res = await fetch(`/export/${type}`, { headers: { "Authorization": `Bearer ${TOKEN}` } });
     const blob = await res.blob();
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement("a");
-    a.href = url;
-    a.download = type === "csv" ? "students.csv" : "students.xlsx";
-    a.click();
-    URL.revokeObjectURL(url);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = type === "csv" ? "students.csv" : "students.xlsx";
+    a.click(); URL.revokeObjectURL(url);
 }
 
-// ═══════════════════════════════════════
-// ANALYTICS + CHARTS
-// ═══════════════════════════════════════
 async function loadAnalytics() {
-    const res  = await fetch("/analytics", { headers: authHeaders() });
+    const res = await fetch("/analytics", { headers: authHeaders() });
     const data = await res.json();
-    const ov   = data.overview;
-
-    // Stats
+    const ov = data.overview;
     document.getElementById("st-total").textContent  = ov.total  || 0;
     document.getElementById("st-passed").textContent = ov.passed || 0;
     document.getElementById("st-failed").textContent = ov.failed || 0;
     document.getElementById("st-avg").textContent    = ov.avg_marks || 0;
     document.getElementById("st-high").textContent   = ov.highest || 0;
-
-    // Colors
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
     const gridColor = isDark ? "#334155" : "#e2e8f0";
     const textColor = isDark ? "#94a3b8" : "#718096";
-
     const labels = data.by_subject.map(s => s.subject || "Other");
     const avgs   = data.by_subject.map(s => s.avg_marks);
-
-    // Subject bar chart (dashboard)
     if (subChart) subChart.destroy();
-    subChart = new Chart(document.getElementById("subjectChart"), {
-        type: "bar",
-        data: { labels, datasets: [{ label: "Avg Marks", data: avgs, backgroundColor: "#6366f1", borderRadius: 6 }] },
-        options: { responsive:true, plugins:{legend:{display:false}}, scales:{
-            y:{grid:{color:gridColor}, ticks:{color:textColor}},
-            x:{grid:{color:gridColor}, ticks:{color:textColor}}
-        }}
-    });
-
-    // Pie chart
+    subChart = new Chart(document.getElementById("subjectChart"), { type:"bar", data:{ labels, datasets:[{ label:"Avg Marks", data:avgs, backgroundColor:"#6366f1", borderRadius:6 }] }, options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ y:{grid:{color:gridColor}, ticks:{color:textColor}}, x:{grid:{color:gridColor}, ticks:{color:textColor}} } } });
     if (pieChart) pieChart.destroy();
-    pieChart = new Chart(document.getElementById("pieChart"), {
-        type: "doughnut",
-        data: {
-            labels: ["Pass","Fail"],
-            datasets: [{ data: [ov.passed, ov.failed], backgroundColor: ["#38a169","#e53e3e"], borderWidth: 0 }]
-        },
-        options: { responsive:true }
-    });
-
-    // Bar chart (analytics page)
+    pieChart = new Chart(document.getElementById("pieChart"), { type:"doughnut", data:{ labels:["Pass","Fail"], datasets:[{ data:[ov.passed, ov.failed], backgroundColor:["#38a169","#e53e3e"], borderWidth:0 }] }, options:{ responsive:true } });
     if (barChart) barChart.destroy();
-    barChart = new Chart(document.getElementById("barChart"), {
-        type: "bar",
-        data: { labels, datasets: [{ label:"Avg Marks", data: avgs, backgroundColor:"#6366f1", borderRadius:6 }] },
-        options: { responsive:true, scales:{
-            y:{grid:{color:gridColor}, ticks:{color:textColor}},
-            x:{grid:{color:gridColor}, ticks:{color:textColor}}
-        }}
-    });
+    barChart = new Chart(document.getElementById("barChart"), { type:"bar", data:{ labels, datasets:[{ label:"Avg Marks", data:avgs, backgroundColor:"#6366f1", borderRadius:6 }] }, options:{ responsive:true, scales:{ y:{grid:{color:gridColor}, ticks:{color:textColor}}, x:{grid:{color:gridColor}, ticks:{color:textColor}} } } });
 }
 
-// ═══════════════════════════════════════
-// UI HELPERS
-// ═══════════════════════════════════════
-function showSection(name) {
+function showSection(name, e) {
     document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
     document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
     document.getElementById("sec-" + name).classList.add("active");
-    event.target.classList.add("active");
+    e.target.classList.add("active");
     if (name === "analytics" || name === "dashboard") loadAnalytics();
 }
 
 function toggleTheme() {
-    const html  = document.documentElement;
+    const html = document.documentElement;
     const isDark = html.getAttribute("data-theme") === "dark";
     html.setAttribute("data-theme", isDark ? "light" : "dark");
     localStorage.setItem("theme", isDark ? "light" : "dark");
@@ -722,74 +394,9 @@ function toggleTheme() {
 
 function showToast(msg) {
     const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.style.opacity = "1";
+    t.textContent = msg; t.style.opacity = "1";
     setTimeout(() => t.style.opacity = "0", 3000);
 }
-=======
-  function getStudents() {
-    try { return JSON.parse(localStorage.getItem('students') || '[]'); }
-    catch { return []; }
-  }
-  function saveStudents(arr) {
-    localStorage.setItem('students', JSON.stringify(arr));
-  }
-  function renderTable(list) {
-    const tbody = document.getElementById('tbody');
-    if (!list || list.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="empty">No students yet. Add your first student above!</td></tr>';
-      document.getElementById('total-count').textContent = 0;
-      return;
-    }
-    tbody.innerHTML = list.map((s, i) => `
-      <tr>
-        <td>${i + 1}</td>
-        <td><strong>${s.name}</strong></td>
-        <td>${s.roll}</td>
-        <td>${s.grade || '-'}</td>
-        <td><span class="badge badge-active">Active</span></td>
-        <td><button class="btn-del" onclick="deleteStudent('${s.roll}')">🗑 Delete</button></td>
-      </tr>
-    `).join('');
-    document.getElementById('total-count').textContent = list.length;
-  }
-  function addStudent() {
-    const name  = document.getElementById('name').value.trim();
-    const roll  = document.getElementById('roll').value.trim();
-    const grade = document.getElementById('grade').value.trim();
-    if (!name || !roll) { showToast('⚠️ Name aur Roll Number zaroori hai!'); return; }
-    const students = getStudents();
-    if (students.some(s => s.roll === roll)) { showToast('⚠️ Yeh Roll Number pehle se hai!'); return; }
-    students.push({ name, roll, grade });
-    saveStudents(students);
-    renderTable(students);
-    document.getElementById('name').value = '';
-    document.getElementById('roll').value = '';
-    document.getElementById('grade').value = '';
-    showToast('✅ Student add ho gaya!');
-  }
-  function deleteStudent(roll) {
-    if (!confirm('Is student ko delete karna chahte ho?')) return;
-    const updated = getStudents().filter(s => s.roll !== roll);
-    saveStudents(updated);
-    renderTable(updated);
-    showToast('🗑 Student delete ho gaya!');
-  }
-  function filterStudents() {
-    const q = document.getElementById('search').value.toLowerCase();
-    const filtered = getStudents().filter(s =>
-      s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q)
-    );
-    renderTable(filtered);
-  }
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
-  renderTable(getStudents());
->>>>>>> 4857efeec9d3642edf45eb047e4a2e6c3246f910
 </script>
 </body>
 </html>
