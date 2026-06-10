@@ -6,27 +6,28 @@ import bcrypt
 import pandas as pd
 import io
 import os
+
 app = Flask(__name__)
 CORS(app)
 
-# JWT Config
-app.config["JWT_SECRET_KEY"] = "student-secret-2024"
+app.config["JWT_SECRET_KEY"] = "student-secret-key-2024-render"
 jwt = JWTManager(app)
 
-# DB initialize karo app start pe
 init_db()
 
 @app.route("/register", methods=["POST"])
 def register():
     data = request.json
-    hashed = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt())
+    hashed = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt()).decode("utf-8")
     try:
         conn = get_connection()
-        conn.execute(
-            "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)",
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO users (username, password_hash, role) VALUES (%s, %s, %s)",
             (data["username"], hashed, data.get("role", "teacher"))
         )
         conn.commit()
+        cur.close()
         conn.close()
         return jsonify({"message": "User registered!"})
     except:
@@ -36,12 +37,12 @@ def register():
 def login():
     data = request.json
     conn = get_connection()
-    user = conn.execute(
-        "SELECT * FROM users WHERE username = ?", (data["username"],)
-    ).fetchone()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users WHERE username = %s", (data["username"],))
+    user = cur.fetchone()
+    cur.close()
     conn.close()
-    
-    if user and bcrypt.checkpw(data["password"].encode(), user["password_hash"]):
+    if user and bcrypt.checkpw(data["password"].encode(), user["password_hash"].encode()):
         token = create_access_token(identity=data["username"])
         return jsonify({"token": token, "username": data["username"]})
     return jsonify({"error": "Wrong username or password"}), 401
@@ -54,7 +55,10 @@ def index():
 @jwt_required()
 def get_students():
     conn = get_connection()
-    students = conn.execute("SELECT * FROM students ORDER BY created_at DESC").fetchall()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM students ORDER BY created_at DESC")
+    students = cur.fetchall()
+    cur.close()
     conn.close()
     return jsonify([dict(s) for s in students])
 
@@ -64,12 +68,14 @@ def add_student():
     data = request.json
     try:
         conn = get_connection()
-        conn.execute(
-            "INSERT INTO students (roll, name, email, subject, grade, marks) VALUES (?,?,?,?,?,?)",
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO students (roll, name, email, subject, grade, marks) VALUES (%s,%s,%s,%s,%s,%s)",
             (data["roll"], data["name"], data.get("email",""),
-             data.get("subject",""), data.get("grade", 0), data.get("marks", 0))
+             data.get("subject",""), data.get("grade",""), data.get("marks", 0))
         )
         conn.commit()
+        cur.close()
         conn.close()
         return jsonify({"message": "Student added!"})
     except Exception as e:
@@ -80,12 +86,14 @@ def add_student():
 def update_student(roll):
     data = request.json
     conn = get_connection()
-    conn.execute(
-        "UPDATE students SET name=?, email=?, subject=?, grade=?, marks=? WHERE roll=?",
+    cur = conn.cursor()
+    cur.execute(
+        "UPDATE students SET name=%s, email=%s, subject=%s, grade=%s, marks=%s WHERE roll=%s",
         (data["name"], data.get("email",""), data.get("subject",""),
-         data.get("grade", 0), data.get("marks", 0), roll)
+         data.get("grade",""), data.get("marks", 0), roll)
     )
     conn.commit()
+    cur.close()
     conn.close()
     return jsonify({"message": "Student updated!"})
 
@@ -93,8 +101,10 @@ def update_student(roll):
 @jwt_required()
 def delete_student(roll):
     conn = get_connection()
-    conn.execute("DELETE FROM students WHERE roll = ?", (roll,))
+    cur = conn.cursor()
+    cur.execute("DELETE FROM students WHERE roll = %s", (roll,))
     conn.commit()
+    cur.close()
     conn.close()
     return jsonify({"message": "Deleted!"})
 
@@ -102,7 +112,8 @@ def delete_student(roll):
 @jwt_required()
 def analytics():
     conn = get_connection()
-    data = conn.execute('''
+    cur = conn.cursor()
+    cur.execute('''
         SELECT 
             COUNT(*)                                          AS total,
             ROUND(AVG(marks), 1)                             AS avg_marks,
@@ -111,14 +122,15 @@ def analytics():
             SUM(CASE WHEN marks >= 50 THEN 1 ELSE 0 END)    AS passed,
             SUM(CASE WHEN marks < 50  THEN 1 ELSE 0 END)    AS failed
         FROM students
-    ''').fetchone()
-    
-    subjects = conn.execute('''
+    ''')
+    data = cur.fetchone()
+    cur.execute('''
         SELECT subject, ROUND(AVG(marks),1) as avg_marks, COUNT(*) as count
         FROM students GROUP BY subject
-    ''').fetchall()
+    ''')
+    subjects = cur.fetchall()
+    cur.close()
     conn.close()
-    
     return jsonify({
         "overview": dict(data),
         "by_subject": [dict(s) for s in subjects]
