@@ -42,7 +42,7 @@ def login():
     user = cur.fetchone()
     cur.close()
     conn.close()
-    if user and bcrypt.checkpw(data["password"].encode(), user["password_hash"].encode()):
+    if user and bcrypt.checkpw(data["password"].encode(), bytes(user["password_hash"])):
         token = create_access_token(identity=data["username"])
         return jsonify({"token": token, "username": data["username"]})
     return jsonify({"error": "Wrong username or password"}), 401
