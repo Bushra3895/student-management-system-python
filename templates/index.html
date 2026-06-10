@@ -20,16 +20,9 @@
     .form-card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 18px; color: #333; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
     .form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: #555; margin-bottom: 6px; }
-    .form-group input {
-      width: 100%; padding: 10px 14px; border: 1.5px solid #e0e0e0;
-      border-radius: 8px; font-size: 0.95rem; outline: none; transition: border 0.2s;
-    }
+    .form-group input { width: 100%; padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border 0.2s; }
     .form-group input:focus { border-color: #667eea; }
-    .btn-add {
-      background: linear-gradient(135deg, #667eea, #764ba2); color: white;
-      border: none; padding: 10px 24px; border-radius: 8px; font-size: 0.95rem;
-      font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity 0.2s;
-    }
+    .btn-add { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
     .btn-add:hover { opacity: 0.9; }
     .search-bar { background: white; border-radius: 12px; padding: 16px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; display: flex; gap: 12px; }
     .search-bar input { flex: 1; padding: 8px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; outline: none; }
@@ -45,8 +38,7 @@
     .btn-del { background: #fff0f0; color: #e53935; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: background 0.2s; }
     .btn-del:hover { background: #ffcdd2; }
     .empty { text-align: center; padding: 48px; color: #aaa; }
-    .empty i { font-size: 3rem; display: block; margin-bottom: 12px; }
-    .toast { position: fixed; bottom: 24px; right: 24px; background: #323232; color: white; padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: #323232; color: white; padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
     .toast.show { opacity: 1; }
     @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
   </style>
@@ -92,68 +84,78 @@
   <table id="student-table">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Roll No</th>
-        <th>Grade</th>
-        <th>Status</th>
-        <th>Action</th>
+        <th>#</th><th>Name</th><th>Roll No</th><th>Grade</th><th>Status</th><th>Action</th>
       </tr>
     </thead>
-    <tbody id="tbody">
-      {% if students %}
-        {% for s in students %}
-        <tr>
-          <td>{{ loop.index }}</td>
-          <td><strong>{{ s.name }}</strong></td>
-          <td>{{ s.roll }}</td>
-          <td>{{ s.grade if s.grade else '-' }}</td>
-          <td><span class="badge badge-active">Active</span></td>
-          <td><button class="btn-del" onclick="deleteStudent('{{ s.roll }}')">🗑 Delete</button></td>
-        </tr>
-        {% endfor %}
-      {% else %}
-        <tr><td colspan="6" class="empty">No students yet. Add your first student above!</td></tr>
-      {% endif %}
-    </tbody>
+    <tbody id="tbody"></tbody>
   </table>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  document.getElementById('total-count').textContent = document.querySelectorAll('#tbody tr td:first-child').length;
-
-  async function addStudent() {
-    const name = document.getElementById('name').value.trim();
-    const roll = document.getElementById('roll').value.trim();
+  function getStudents() {
+    try { return JSON.parse(localStorage.getItem('students') || '[]'); }
+    catch { return []; }
+  }
+  function saveStudents(arr) {
+    localStorage.setItem('students', JSON.stringify(arr));
+  }
+  function renderTable(list) {
+    const tbody = document.getElementById('tbody');
+    if (!list || list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">No students yet. Add your first student above!</td></tr>';
+      document.getElementById('total-count').textContent = 0;
+      return;
+    }
+    tbody.innerHTML = list.map((s, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${s.name}</strong></td>
+        <td>${s.roll}</td>
+        <td>${s.grade || '-'}</td>
+        <td><span class="badge badge-active">Active</span></td>
+        <td><button class="btn-del" onclick="deleteStudent('${s.roll}')">🗑 Delete</button></td>
+      </tr>
+    `).join('');
+    document.getElementById('total-count').textContent = list.length;
+  }
+  function addStudent() {
+    const name  = document.getElementById('name').value.trim();
+    const roll  = document.getElementById('roll').value.trim();
     const grade = document.getElementById('grade').value.trim();
-    if (!name || !roll) { showToast('Please fill Name and Roll No!'); return; }
-    await fetch('/add', {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({name, roll, grade})});
-    showToast('Student added successfully!');
-    setTimeout(() => location.reload(), 800);
+    if (!name || !roll) { showToast('⚠️ Name aur Roll Number zaroori hai!'); return; }
+    const students = getStudents();
+    if (students.some(s => s.roll === roll)) { showToast('⚠️ Yeh Roll Number pehle se hai!'); return; }
+    students.push({ name, roll, grade });
+    saveStudents(students);
+    renderTable(students);
+    document.getElementById('name').value = '';
+    document.getElementById('roll').value = '';
+    document.getElementById('grade').value = '';
+    showToast('✅ Student add ho gaya!');
   }
-
-  async function deleteStudent(roll) {
-    if (!confirm('Delete this student?')) return;
-    await fetch('/delete/'+roll, {method:'DELETE'});
-    showToast('Student deleted!');
-    setTimeout(() => location.reload(), 800);
+  function deleteStudent(roll) {
+    if (!confirm('Is student ko delete karna chahte ho?')) return;
+    const updated = getStudents().filter(s => s.roll !== roll);
+    saveStudents(updated);
+    renderTable(updated);
+    showToast('🗑 Student delete ho gaya!');
   }
-
   function filterStudents() {
     const q = document.getElementById('search').value.toLowerCase();
-    document.querySelectorAll('#tbody tr').forEach(row => {
-      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
-    });
+    const filtered = getStudents().filter(s =>
+      s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q)
+    );
+    renderTable(filtered);
   }
-
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
+    t.textContent = msg;
+    t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
+  renderTable(getStudents());
 </script>
 </body>
 </html>
