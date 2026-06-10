@@ -106,28 +106,37 @@ student-management-system-python/
 
 ### Steps
 
+**1. Clone the repository**
 ```bash
-# 1. Clone the repository
 git clone https://github.com/Bushra3895/student-management-system-python.git
 cd student-management-system-python
+```
 
-# 2. Create a virtual environment
+**2. Create a virtual environment**
+```bash
 python -m venv venv
 source venv/bin/activate        # On Windows: venv\Scripts\activate
+```
 
-# 3. Install dependencies
+**3. Install dependencies**
+```bash
 pip install -r requirements.txt
+```
 
-# 4. Set up environment variables
-# Create a .env file in root directory:
+**4. Set up environment variables**
+
+Create a `.env` file in the root directory and add:
+```env
 DATABASE_URL=postgresql://username:password@localhost:5432/student_db
 SECRET_KEY=your_secret_key_here
+```
 
-# 5. Run the application
+**5. Run the application**
+```bash
 python app.py
 ```
 
-The app will be available at `http://localhost:5000`
+✅ The app will be available at `http://localhost:5000`
 
 ---
 
@@ -148,6 +157,34 @@ The app will be available at `http://localhost:5000`
 6. Click **"Create Web Service"**
 
 ---
+
+## 🔑 Render Account Recovery (Forgot Password / Logged Out)
+
+If you are **logged out of Render** or forgot your credentials, follow these steps:
+
+### Option 1 — Reset via Email
+1. Go to [https://dashboard.render.com](https://dashboard.render.com)
+2. Click **"Forgot Password?"** on the login page
+3. Enter the email you used to sign up
+4. Check your inbox for a **password reset link**
+5. Click the link and set a new password
+
+### Option 2 — Login via GitHub (Recommended)
+> If you originally signed up using GitHub OAuth:
+1. Go to [https://dashboard.render.com](https://dashboard.render.com)
+2. Click **"Continue with GitHub"**
+3. Authorize Render to access your GitHub account
+4. You will be logged in automatically
+
+### Option 3 — Login via Google
+1. Go to [https://dashboard.render.com](https://dashboard.render.com)
+2. Click **"Continue with Google"**
+3. Select the Google account you used during signup
+
+### ⚠️ Important Tips
+- Always use the **same login method** you originally used (GitHub / Google / Email)
+- If your app goes to sleep (free tier), it will **auto-wake** on first request — just wait 30–60 seconds
+- To keep the app always awake, upgrade to Render's **paid plan** or use an uptime monitoring service like [UptimeRobot](https://uptimerobot.com)
 
 ---
 
