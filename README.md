@@ -28,7 +28,15 @@ Use the following demo account to explore the application:
 
 
 ---
+## 📸 Screenshots
 
+| Dashboard | Students Record |
+|-----------|----------------|
+| ![Dashboard](https://raw.githubusercontent.com/Bushra3895/student-management-system-python/main/Dashboard.PNG) | ![Students Record](https://raw.githubusercontent.com/Bushra3895/student-management-system-python/main/Students%20Record.PNG) |
+
+| Analytics | Analytics Graph | Students |
+|-----------|----------------|----------|
+| ![Analytics](https://raw.githubusercontent.com/Bushra3895/student-management-system-python/main/Analytics.PNG) | ![Analytics Graph](https://raw.githubusercontent.com/Bushra3895/student-management-system-python/main/Analytics%20graph.PNG) | ![Students](https://raw.githubusercontent.com/Bushra3895/student-management-system-python/main/Students.PNG) |
 ## 📌 Project Overview
 
 This Student Management System allows administrators and educators to manage student records efficiently. It started as a simple JSON-based system and evolved into a full-stack application with a PostgreSQL database, secure authentication, and a modern UI.
