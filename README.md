@@ -18,9 +18,9 @@
 
 Use the following demo account to explore the application:
 
-**Username:** teacher1
+**Username:** admin1
 
-**Password:** pass123
+**Password:** Test@123
 
 > Note: This is a demo account created for recruiters and reviewers. Feel free to add, edit, or delete sample student records while testing the application.
 
